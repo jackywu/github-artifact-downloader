@@ -1,0 +1,45 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  # Python: Linting and Formatting (Ruff)
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check --fix
+        language: system
+        types: [python]
+        files: ^src_py/
+
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format
+        language: system
+        types: [python]
+        files: ^src_py/
+
+  # Python: Type Checking (MyPy)
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        types: [python]
+        files: ^src_py/
+        pass_filenames: false
+        args:
+          [
+            '--cache-dir',
+            '.mypy_cache',
+            '--follow-imports',
+            'skip',
+            '--ignore-missing-imports',
+            'src_py',
+          ]
